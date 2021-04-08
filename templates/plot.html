@@ -1,0 +1,17 @@
+{% extends 'index.html' %}
+
+{% block content %}
+
+    <div class="text-center mb-2">
+        <div><p>{{ val }}</p></div>
+        <div id="graph" class="chart border-primary" style="width:100%; height: 75vh; margin: auto"></div>
+        <input type="button" class="btn btn-primary btn-sm" onclick="location.href='/';" value="Get back to form"/>
+        <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+        <script type="text/javascript">
+            var graphs = {{plot | safe}};
+            var layout = {{ lay | safe }}
+                Plotly.plot('graph', graphs, layout);
+        </script>
+    </div>
+
+{% endblock %}

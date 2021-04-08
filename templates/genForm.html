@@ -1,0 +1,145 @@
+{% extends 'index.html' %}
+
+{% block content %}
+    <style type="text/css">
+        body {
+            background-image: url("https://cdn.pixabay.com/photo/2017/05/31/03/04/dna-2358911_1280.jpg") !important;
+            background-size: 100%;
+        }
+    </style>
+    <div class="container col-lg-6 mt-5 font-weight-bold border border-dark bg-light p-2">
+        <h2>Find the best gene in a population</h2>
+        <form class="" action="plot" method="post">
+            <div class="form-row">
+                <div class="form-group col-md-9">
+                    <label for="function">Function</label>
+                    <select id="function" class="form-control" aria-describedby="functionHelp" name="function">
+                        <option selected value="1">Beale</option>
+                        <option value="2">Easom</option>
+                    </select>
+                    <small id="functionHelp" class="form-text text-muted">Select fitness function.</small>
+                </div>
+                <div class="form-group col-md-3">
+                    <label for="target">Target</label>
+                    <select id="target" class="form-control" aria-describedby="targetHelp" name="target">
+                        <option selected value="min">min</option>
+                        <option value="max">max</option>
+                    </select>
+                    <small id=targetHelp" class="form-text text-muted">Algorithm target.</small>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="searchRangeMin">Search min</label>
+                    <input type="number" class="form-control" id="searchRangeMin" aria-describedby="searchRangeMinHelp"
+                           name="searchMin" value="-10">
+                    <small id="searchRangeMinHelp" class="form-text text-muted">Search range minimum.</small>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="searchRangeMax">Search max</label>
+                    <input type="number" class="form-control" id="searchRangeMax" aria-describedby="searchRangeMaxHelp"
+                           name="searchMax" value="10">
+                    <small id="searchRangeMaxHelp" class="form-text text-muted">Search range maximum.</small>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-4">
+                    <label for="populationSize">Population size</label>
+                    <input type="number" class="form-control" id="populationSize" aria-describedby="populationSizeHelp"
+                           name="populationSize" value="200" min="10" max="1000">
+                    <small id="populationSizeHelp" class="form-text text-muted">Min: 10, Max: 1000.</small>
+                </div>
+                <div class="form-group col-md-3">
+                    <label for="epochsNumber">Epochs</label>
+                    <input type="number" class="form-control" id="epochsNumber" aria-describedby="epochsNumberHelp"
+                           name="epochsNumber" value="100" min="1" max="1000">
+                    <small id="epochsNumberHelp" class="form-text text-muted">Min: 1, Max: 1000.</small>
+                </div>
+                <div class="form-group col-md-5">
+                    <label for="chrLength">Chromosome length</label>
+                    <input type="number" class="form-control" id="chrLength" aria-describedby="chrLengthHelp"
+                           name="chrLength" value="10" min="10" max="1000">
+                    <small id="chrLengthHelp" class="form-text text-muted">Min: 10, Max: 1000.</small>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="bestNum">Percent of best chromosomes</label>
+                    <input type="number" class="form-control" id="bestNum" aria-describedby="bestNumHelp" value="0.3"
+                           name="bestNum" min="0.3">
+                    <small id="bestNum" class="form-text text-muted">Min: 0.3</small>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="eliteNum">Number of elite chromosomes</label>
+                    <input type="number" class="form-control" id="eliteNum" aria-describedby="eliteNumHelp" value="5"
+                           name="eliteNum" min="1">
+                    <small id="eliteNumHelp" class="form-text text-muted">Min: 1.</small>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-8">
+                    <label for="selType">Selection type</label>
+                    <select id="selType" class="form-control" aria-describedby="selTypeHelp" name="selType">
+                        <option value="Best">Best</option>
+                        <option value="Roulette">Roulette</option>
+                        <option selected value="Tournament">Tournament</option>
+                    </select>
+                    <small id="selTypeHelp" class="form-text text-muted">Method of chromosomes selection.</small>
+                </div>
+                <div class="form-group col-md-4">
+                    <label for="tSize">Tournament size</label>
+                    <input type="number" class="form-control" id="tSize" name="tSize" aria-describedby="tSizeHelp"
+                           value="5" min="5" max="1000">
+                    <small id="tSizelHelp" class="form-text text-muted">Min: 5, Max: 1000.</small>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-8">
+                    <label for="crossType">Crossover type</label>
+                    <select id="crossType" class="form-control" aria-describedby="crossTypeHelp" name="crossType">
+                        <option value="one-point">One point</option>
+                        <option selected value="two-point">Two point</option>
+                        <option value="three-point">Three point</option>
+                        <option value="uniform">Uniform</option>
+                    </select>
+                    <small id="crossTypeHelp" class="form-text text-muted">Chromosomes crossover type.</small>
+                </div>
+                <div class="form-group col-md-4">
+                    <label for="crossProb">Probability</label>
+                    <input type="number" class="form-control" id="crossProb" name="crossProb"
+                           aria-describedby="probHelp" placeholder="Enter email" value="0.6" min="0" max="1"
+                           step="0.01">
+                    <small id="probHelp" class="form-text text-muted">Min: 0, Max: 1.</small>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-8">
+                    <label for="mutType">Mutation type</label>
+                    <select id="mutType" class="form-control" aria-describedby="mutTypeHelp" name="mutType">
+                        <option value="one-point">One point</option>
+                        <option selected value="two-point">Two point</option>
+                        <option value="edge">Edge</option>
+                    </select>
+                    <small id="mutTypeHelp" class="form-text text-muted">Chromosome mutation type.</small>
+                </div>
+                <div class="form-group col-md-4">
+                    <label for="mutProb">Probability</label>
+                    <input type="number" class="form-control" id="mutProb" name="mutProb" aria-describedby="mutProbHelp"
+                           value="0.01" min="0" max="1" step="0.01">
+                    <small id="mutProbHelp" class="form-text text-muted">Min: 0, Max: 1.</small>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="invProb">Inversion probability</label>
+                <input type="number" class="form-control" id="invProb" aria-describedby="invProbHelp" name="invProb"
+                       value="0.01" min="0" max="1" step="0.01">
+                <small id="invProbHelp" class="form-text text-muted">Min: 0, Max: 1.</small>
+            </div>
+            <div class="text-center">
+                <button type="submit" class="btn btn-primary text-center">Submit</button>
+            </div>
+        </form>
+        <br/>
+    </div>
+    <br/>
+{% endblock %}
